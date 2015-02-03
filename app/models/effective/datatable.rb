@@ -2,7 +2,7 @@ module Effective
   class Datatable
     attr_accessor :total_records, :display_records, :view, :attributes
 
-    delegate :render, :link_to, :mail_to, :to => :@view
+    delegate :render, :link_to, :mail_to, :t, :to => :@view
 
     class << self
       def all
@@ -310,7 +310,7 @@ module Effective
         cols[name][:array_column] ||= false
         cols[name][:array_index] = index # The index of this column in the collection, regardless of hidden table_columns
         cols[name][:name] ||= name
-        cols[name][:label] ||= name.titleize
+        cols[name][:label] ||= collection ? collection.model.human_attribute_name(name).titleize : name.titleize
         cols[name][:column] ||= (sql_table && sql_column) ? "\"#{sql_table.name}\".\"#{sql_column.name}\"" : name
         cols[name][:width] ||= nil
         cols[name][:sortable] = true if cols[name][:sortable] == nil
