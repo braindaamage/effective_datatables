@@ -25,3 +25,4 @@ es:
       pdf: "PDF"
       csv: "CSV"
       xls: "XLS"
+    sRangeFormat: "Desde {from} hasta {to}"

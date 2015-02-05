@@ -87,8 +87,9 @@ initializeDataTables = ->
       if filter
         datatable.columnFilter
           sPlaceHolder: 'head:after'
-          aoColumns : datatable.data('filter')
+          aoColumns: <%= "#{EffectiveDatatables::DT_OPS[:aoColumns]}" || "datatable.data('filter')" %>
           bUseColVis: true
+          sRangeFormat: "<%= I18n.t("datatable.sRangeFormat")%>"
 
   $('.dataTables_filter').each ->
     $(this).html("<button class='btn-reset-filters ColVis_Button' data-effective-datatables-reset-filters='true'><span><%= I18n.t("datatable.reset_filters", default: "Reset Filters") %></span></button>")

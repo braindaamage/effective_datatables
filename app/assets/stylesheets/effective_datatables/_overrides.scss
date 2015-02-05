@@ -1,5 +1,5 @@
 .dataTables_wrapper {   // This is the Header
-  overflow: hidden;
+  // overflow: hidden;
 
   .row {
     margin-left: -15px;
@@ -123,4 +123,9 @@ ul.ColVis_collection {
 div.DTTT_print_info {
   h6 { color: black; }
   p { color: black; }
+}
+
+
+input.date_range_filter{
+  width: 80px !important;
 }

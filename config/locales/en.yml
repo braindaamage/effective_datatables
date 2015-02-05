@@ -25,3 +25,4 @@ en:
       pdf: "PDF"
       csv: "CSV"
       xls: "XLS"
+    sRangeFormat: "From {from} to {to}"

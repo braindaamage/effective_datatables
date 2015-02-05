@@ -572,6 +572,7 @@ end
 ```ruby
 iDisplayLength: 15
 lengthMenu: [[5, 10, 25, 50, -1],[5, 10, 25, 50, "All"]]
+aoColumns: '[{ type: "text" }, { type: "text" }, { type: "date-range" },{ type: "text" }]'
 buttons:
   xls: false
   pdf: true
