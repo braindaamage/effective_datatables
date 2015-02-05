@@ -1,0 +1,27 @@
+en:
+  datatable:
+    show_all: "Show All"
+    restore_default: "Restore"
+    lengthMenu: "Display _MENU_ records per page"
+    zeroRecords: "Nothing found - sorry"
+    info: "Showing page _PAGE_ of _PAGES_"
+    infoEmpty: "No records available"
+    infoFiltered: "(filtered from _MAX_ total records)"
+    reset_filters: "Reiniciar Filtros"
+    all: "All"
+    processing: "Processing..."
+    search:  "Search"
+    loadingRecords: "Loading..."
+    emptyTable: "No data available in table"
+    paginate:
+      first: "First"
+      last: "Last"
+      previous: "Previous"
+      next: "Next"
+    buttons:
+      show_hide: "Show / hide columns"
+      print: "Print"
+      copy: "Copy"
+      pdf: "PDF"
+      csv: "CSV"
+      xls: "XLS"

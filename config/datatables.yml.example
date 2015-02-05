@@ -1,0 +1,7 @@
+iDisplayLength: 15
+lengthMenu: [[5, 10, 25, 50, -1],[5, 10, 25, 50, "All"]]
+buttons:
+  xls: false
+  pdf: true
+  print: true
+  csv: true

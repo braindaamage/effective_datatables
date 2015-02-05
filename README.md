@@ -565,6 +565,19 @@ rescue_from Effective::AccessDenied do |exception|
 end
 ```
 
+## Extras
+1. Include i18n support for column names and datatable texts.
+2. Load some options of datatable initialize from `config/datatable.yml`. For example:
+
+```ruby
+iDisplayLength: 15
+lengthMenu: [[5, 10, 25, 50, -1],[5, 10, 25, 50, "All"]]
+buttons:
+  xls: false
+  pdf: true
+  print: true
+  csv: true
+```
 
 ## License
 
