@@ -2,7 +2,7 @@ module Effective
   class Datatable
     attr_accessor :total_records, :display_records, :view, :attributes
 
-    delegate :render, :link_to, :mail_to, :t, :to => :@view
+    delegate :render, :link_to, :mail_to, :t, :l, :to => :@view
 
     class << self
       def all
