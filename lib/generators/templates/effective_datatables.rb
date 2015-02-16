@@ -25,6 +25,7 @@ EffectiveDatatables.setup do |config|
   # By default, format Date and DateTime values with the following
   config.date_format = "%Y-%m-%d"
   config.datetime_format = "%Y-%m-%d %H:%M"
+  config.lazy_load = false
 
 
 end
