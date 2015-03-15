@@ -7,13 +7,24 @@
   }
 
   .form-control {
-    color: #646464;
+    color: #767676;
     border: 1px solid #bcbcbc;
-
+    font-size: 12px;
+    height: 21px !important;
+    padding: 1px;
+    font-weight: normal;
+    border-radius: 2px;
     &:focus {
+      color: #5E5E5E !important;
       box-shadow: none;
       border-color: #03428d;
     }
+  }
+
+  .filter_date_range{
+    color: #767676;
+    font-size: 12px;
+    font-weight: normal;
   }
 
   .DTTT_button,
@@ -127,5 +138,9 @@ div.DTTT_print_info {
 
 
 input.date_range_filter{
-  width: 80px !important;
+  width: 70px !important;
+}
+
+div.ui-datepicker.ui-widget{
+  z-index: 3 !important; //Over paginate
 }

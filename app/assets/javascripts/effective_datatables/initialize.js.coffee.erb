@@ -86,7 +86,7 @@ initializeDataTables = ->
 
       if filter
         datatable.columnFilter
-          sPlaceHolder: 'head:after'
+          sPlaceHolder: 'head:before'
           aoColumns: <%= EffectiveDatatables::DT_OPS[:aoColumns].present? ? "#{EffectiveDatatables::DT_OPS[:aoColumns]}" : "datatable.data('filter')" %>
           bUseColVis: true
           sRangeFormat: "<%= I18n.t("datatable.sRangeFormat")%>"
