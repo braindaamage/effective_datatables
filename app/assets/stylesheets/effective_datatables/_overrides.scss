@@ -1,5 +1,5 @@
 .dataTables_wrapper {   // This is the Header
-  overflow: hidden;
+  // overflow: hidden;
 
   .row {
     margin-left: -15px;
@@ -7,13 +7,24 @@
   }
 
   .form-control {
-    color: #646464;
+    color: #767676;
     border: 1px solid #bcbcbc;
-
+    font-size: 12px;
+    height: 21px !important;
+    padding: 1px;
+    font-weight: normal;
+    border-radius: 2px;
     &:focus {
+      color: #5E5E5E !important;
       box-shadow: none;
       border-color: #03428d;
     }
+  }
+
+  .filter_date_range{
+    color: #767676;
+    font-size: 12px;
+    font-weight: normal;
   }
 
   .DTTT_button,
@@ -123,4 +134,13 @@ ul.ColVis_collection {
 div.DTTT_print_info {
   h6 { color: black; }
   p { color: black; }
+}
+
+
+input.date_range_filter{
+  width: 70px !important;
+}
+
+div.ui-datepicker.ui-widget{
+  z-index: 3 !important; //Over paginate
 }

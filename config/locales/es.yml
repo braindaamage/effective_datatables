@@ -1,0 +1,28 @@
+es:
+  datatable:
+    show_all: "Ver todo"
+    restore_default: "Restaurar"
+    lengthMenu: "Mostrar _MENU_ registros por página"
+    zeroRecords: "No se encontraron registros"
+    info: "Mostrando página _PAGE_ de _PAGES_ de un total de _MAX_ registros"
+    infoEmpty: "Sin registros disponibles"
+    infoFiltered: "(filtrado de _MAX_ registros totales)"
+    reset_filters: "Reiniciar Filtros"
+    all: "Todo"
+    processing: "Procesando..."
+    search:  "Buscar"
+    loadingRecords: "Cargando..."
+    emptyTable: "No hay datos disponibles en la tabla"
+    paginate:
+      first: "Primera"
+      last: "Última"
+      previous: "Anterior"
+      next: "Siguiente"
+    buttons:
+      show_hide: "Mostrar / Ocultar columnas"
+      print: "Imprimir"
+      copy: "Copiar"
+      pdf: "PDF"
+      csv: "CSV"
+      xls: "XLS"
+    sRangeFormat: "Desde {from} hasta {to}"

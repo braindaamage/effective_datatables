@@ -8,6 +8,7 @@ module EffectiveDatatables
   mattr_accessor :authorization_method
   mattr_accessor :date_format
   mattr_accessor :datetime_format
+  mattr_accessor :lazy_load
 
   def self.setup
     yield self
@@ -27,7 +28,7 @@ module EffectiveDatatables
   private
 
   def self.read_datatables
-    Rails.application.eager_load! unless Rails.configuration.cache_classes
+    Rails.application.eager_load! unless Rails.configuration.cache_classes || lazy_load
     Effective::Datatable.descendants.map { |klass| klass }.compact
   end
 

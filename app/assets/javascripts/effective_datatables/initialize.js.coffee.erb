@@ -1,0 +1,100 @@
+initializeDataTables = ->
+  $('table[data-effective-datatables-table]').each ->
+    unless $.fn.DataTable.fnIsDataTable(this)
+      datatable = $(this)
+
+      aoColumnDefs = [
+        { bSortable: false, aTargets: datatable.data('non-sortable') },
+        { bVisible: false, aTargets: datatable.data('non-visible') }
+      ].concat(datatable.data('column-classes') || [])
+
+      aButtons_options = []
+      aButtons_options.push {
+              sExtends: "copy"
+              sButtonText: "<%= I18n.t("datatable.buttons.copy", default: "Copy") %>"
+            } if <%= EffectiveDatatables::DT_OPS[:buttons][:copy] ||false rescue false %>
+      aButtons_options.push {
+              sExtends: "csv"
+              sButtonText: "<%= I18n.t("datatable.buttons.csv", default: "CSV") %>"
+            } if <%= EffectiveDatatables::DT_OPS[:buttons][:csv] || false rescue false %>
+      # aButtons_options.push {
+      #         sExtends: "xls"
+      #         sButtonText: "<%= I18n.t("datatable.buttons.xls", default: "XLS") %>"
+      #       } if <%= EffectiveDatatables::DT_OPS[:buttons][:xls] || false rescue false %>
+      aButtons_options.push {
+              sExtends: "pdf"
+              sButtonText: "<%= I18n.t("datatable.buttons.pdf", default: "PDF") %>"
+            } if <%= EffectiveDatatables::DT_OPS[:buttons][:pdf] || false rescue false %>
+      aButtons_options.push {
+              sExtends: "print"
+              sButtonText: "<%= I18n.t("datatable.buttons.print", default: "Print") %>"
+            } if <%= EffectiveDatatables::DT_OPS[:buttons][:print] || false rescue false %>
+
+      init_options =
+        bServerSide: true
+        bProcessing: true
+        bSaveState: true
+        bAutoWidth: false
+        deferRender: true
+        order: datatable.data('default-order')
+        sAjaxSource: datatable.data('source')
+        pagingType: 'simple_numbers'
+        iDisplayLength:  <%= EffectiveDatatables::DT_OPS[:iDisplayLength] || 15 %>
+        lengthMenu: <%= EffectiveDatatables::DT_OPS[:lengthMenu] || [[10, 25, 50, 100, 250, 1000, -1], [10, 25, 50, 100, 250, 1000, I18n.t("datatable.all", default: "All")]] %>
+        fnServerParams: (aoData, a, b) ->
+          table = this.DataTable()
+          table.columns().flatten().each (index) ->
+            aoData.push({'name': "sVisible_#{index}", 'value': table.column(index).visible()})
+        aoColumnDefs: aoColumnDefs
+        aoColumns: datatable.data('widths')
+        oTableTools:
+          sSwfPath: '/assets/effective_datatables/copy_csv_xls_pdf.swf'
+          aButtons: aButtons_options
+        colVis:
+          buttonText: "<%= I18n.t("datatable.buttons.show_hide", default: "Show / hide columns") %>"
+          showAll: "<%= I18n.t("datatable.show_all", default: "Show all") %>"
+          restore: "<%= I18n.t("datatable.restore_default", default: 'Restore default visible') %>"
+          activate: 'mouseover'
+          fnStateChange: (iCol, bVisible) ->
+            table = $(this.dom.button).closest('.dataTables_wrapper').children('table').first().DataTable()
+            table.draw()
+        language:
+          lengthMenu: "<%= I18n.t("datatable.lengthMenu", default: "Display _MENU_ records per page") %>"
+          zeroRecords: "<%= I18n.t("datatable.zeroRecords", default: "Nothing found - sorry") %>"
+          info: "<%= I18n.t("datatable.info", default: "Showing page _PAGE_ of _PAGES_") %>"
+          infoEmpty: "<%= I18n.t("datatable.infoEmpty", default: "No records available") %>"
+          infoFiltered: "<%= I18n.t("datatable.infoFiltered", default: "(filtered from _MAX_ total records)") %>"
+          processing: "<%= I18n.t("datatable.processing", default: "Processing...") %>"
+          search: "<%= I18n.t("datatable.search", default: "Search") %>"
+          loadingRecords: "<%= I18n.t("datatable.loadingRecords", default: "Loading...") %>"
+          emptyTable: "<%= I18n.t("datatable.emptyTable", default: "No data available in table") %>"
+          paginate:
+            first:      "<%= I18n.t("datatable.paginate.first", default: "First") %>"
+            previous:   "<%= I18n.t("datatable.paginate.previous", default: "Previous") %>"
+            next:       "<%= I18n.t("datatable.paginate.next", default: "Next") %>"
+            last:       "<%= I18n.t("datatable.paginate.last", default: "Last") %>"
+
+      simple = datatable.data('effective-datatables-table') == 'simple'
+      filter = datatable.data('filter')
+
+      if simple
+        init_options['lengthMenu'] = [-1] # Show all results
+        init_options['dom'] = "<'row'r>t" # Just show the table
+
+      # Actually initialize it
+      datatable = datatable.dataTable(init_options)
+
+      if filter
+        datatable.columnFilter
+          sPlaceHolder: 'head:before'
+          aoColumns: <%= EffectiveDatatables::DT_OPS[:aoColumns].present? ? "#{EffectiveDatatables::DT_OPS[:aoColumns]}" : "datatable.data('filter')" %>
+          bUseColVis: true
+          sRangeFormat: "<%= I18n.t("datatable.sRangeFormat")%>"
+
+  $('.dataTables_filter').each ->
+    $(this).html("<button class='btn-reset-filters ColVis_Button' data-effective-datatables-reset-filters='true'><span><%= I18n.t("datatable.reset_filters", default: "Reset Filters") %></span></button>")
+
+$ -> initializeDataTables()
+$(document).on 'page:change', -> initializeDataTables()
+
+$(document).on 'click', '[data-effective-datatables-reset-filters]', (event) -> window.location.reload()
