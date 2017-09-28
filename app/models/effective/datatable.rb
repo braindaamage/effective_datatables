@@ -164,13 +164,21 @@ module Effective
       col = collection
 
       if active_record_collection?
-        self.total_records = (collection_class.connection.execute("SELECT COUNT(*) FROM (#{col.to_sql}) AS datatables_count").first['count'] rescue 1)
+        if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+          self.total_records = (collection_class.connection.execute("SELECT COUNT(*) FROM (#{col.to_sql}) AS datatables_count").first['count'] rescue 1)
+        else
+          self.total_records = (collection_class.connection.execute("SELECT COUNT(*) FROM (#{col.to_sql}) AS datatables_count").first.first rescue 1)
+        end
 
         col = table_tool.order(col)
         col = table_tool.search(col)
 
         if table_tool.search_terms.present? && array_tool.search_terms.blank?
-          self.display_records = (collection_class.connection.execute("SELECT COUNT(*) FROM (#{col.to_sql}) AS datatables_count").first['count'] rescue 1)
+          if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+            self.display_records = (collection_class.connection.execute("SELECT COUNT(*) FROM (#{col.to_sql}) AS datatables_count").first['count'] rescue 1)
+          else
+            self.display_records = (collection_class.connection.execute("SELECT COUNT(*) FROM (#{col.to_sql}) AS datatables_count").first.first rescue 1)
+          end
         end
       else
         self.total_records = col.size
@@ -311,11 +319,16 @@ module Effective
         cols[name][:array_index] = index # The index of this column in the collection, regardless of hidden table_columns
         cols[name][:name] ||= name
         cols[name][:label] ||= collection ? collection.model.human_attribute_name(name).titleize : name.titleize
-        cols[name][:column] ||= (sql_table && sql_column) ? "\"#{sql_table.name}\".\"#{sql_column.name}\"" : name
         cols[name][:width] ||= nil
         cols[name][:sortable] = true if cols[name][:sortable] == nil
         cols[name][:type] ||= (belong_tos.key?(name) ? :belongs_to : (sql_column.try(:type).presence || :string))
         cols[name][:class] = "col-#{cols[name][:type]} col-#{name} #{cols[name][:class]}".strip
+
+        if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+          cols[name][:column] ||= (sql_table && sql_column) ? "\"#{sql_table.name}\".\"#{sql_column.name}\"" : name
+        else
+          cols[name][:column] ||= (sql_table && sql_column) ? "#{sql_table.name}.#{sql_column.name}" : name
+        end
 
         if name == 'id' && collection.respond_to?(:deobfuscate)
           cols[name][:sortable] = false
