@@ -18,8 +18,14 @@ module Effective
     end
 
     def order(collection)
-      if order_column.present?
-        collection.order("#{order_column[:column]} #{order_direction} NULLS #{order_direction == 'ASC' ? 'LAST' : 'FIRST'}")
+      if order_column.present? && order_column["sortable"]
+        if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+          collection.order("#{order_column[:column]} #{order_direction} NULLS #{order_direction == 'ASC' ? 'LAST' : ' FIRST'}")
+        elsif ActiveRecord::Base.connection.adapter_name == "Mysql2"
+          collection.order("#{order_direction == 'ASC' ? "IF(ISNULL(#{order_column[:column]}) OR url='',1,0)," : ''}#{order_column[:column]} #{order_direction}")
+        else
+          collection.order("#{order_column[:column]} #{order_direction}")
+        end
       else
         collection
       end
@@ -42,7 +48,13 @@ module Effective
         if table_column[:filter][:type] == :select && table_column[:filter][:fuzzy] != true
           collection.where("#{column} = :term", :term => term)
         else
-          collection.where("#{column} ILIKE :term", :term => "%#{term}%")
+          if ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+            collection.where("#{column} ILIKE :term", :term => "%#{term}%")
+          elsif ActiveRecord::Base.connection.adapter_name == "Mysql2"
+            collection.where("LOWER(#{column}) LIKE :term", :term => "%#{term.downcase}%")
+          else
+            collection.where("#{column} LIKE :term", :term => "%#{term}%")
+          end
         end
       when :datetime
         begin
