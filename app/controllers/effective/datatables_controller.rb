@@ -1,5 +1,5 @@
 module Effective
-  class DatatablesController < ApplicationController
+  class DatatablesController < Spree::StoreController
     skip_log_page_views if defined?(EffectiveLogging)
 
     def show
